@@ -1,0 +1,350 @@
+Here is a project setup guide you are going to  be the project manager, please let us know what you have, dont do any coding 
+
+📘 PROJECT SETUP GUIDE (For VSCode + Option 1 Stack)
+Node.js + Express + PostgreSQL + Prisma
+
+📁 1. Create Your Project Structure
+Create a new folder in VSCode called:
+ad-platform
+
+Inside it, create the following structure:
+ad-platform/
+  src/
+    api/
+      clients.js
+      tokens.js
+      accounts.js
+      campaigns.js
+      reports.js
+    services/
+      google.js
+      meta.js
+      sync.js
+    utils/
+      prisma.js
+      crypto.js
+    app.js
+  prisma/
+    schema.prisma
+  .env
+  .env.example
+  package.json
+  README.md
+
+Don't worry — the guide includes what to put in each file.
+
+🟦 2. Initialize Your Project
+Open VSCode terminal in the project folder.
+Run:
+npm init -y
+
+Install dependencies:
+npm install express cors axios dotenv
+
+Install Prisma:
+npm install prisma @prisma/client
+npx prisma init
+
+This creates /prisma/schema.prisma.
+
+🗄️ 3. Set Up PostgreSQL Connection
+In .env: 
+DATABASE_URL="postgresql://USER:PASSWORD@localhost:5432/adplatform?schema=public"
+ENCRYPTION_KEY="PUT_A_32_CHAR_KEY_HERE"
+GOOGLE_CLIENT_ID=""
+GOOGLE_CLIENT_SECRET=""
+GOOGLE_REDIRECT_URI="http://localhost:3000/auth/google/callback"
+META_CLIENT_ID=""
+META_CLIENT_SECRET=""
+META_REDIRECT_URI="http://localhost:3000/auth/meta/callback"
+You must fill in the secrets manually.
+
+🧱 4. Create Prisma Database Schema
+Open prisma/schema.prisma and paste:
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Client {
+  id          Int           @id @default(autoincrement())
+  name        String
+  email       String?
+  createdAt   DateTime      @default(now())
+  tokens      ClientToken[]
+  accounts    AdAccount[]
+  projects    Project[]
+  events      Event[]
+  competitors Competitor[]
+}
+
+model ClientToken {
+  id           Int       @id @default(autoincrement())
+  clientId     Int
+  platform     String
+  accessToken  String
+  refreshToken String?
+  expiresAt    DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  client Client @relation(fields: [clientId], references: [id])
+
+  @@unique([clientId, platform])
+}
+
+model AdAccount {
+  id                Int       @id @default(autoincrement())
+  clientId          Int
+  platform          String
+  externalAccountId String
+  name              String?
+  createdAt         DateTime  @default(now())
+
+  client    Client     @relation(fields: [clientId], references: [id])
+  campaigns Campaign[]
+}
+
+model Campaign {
+  id                Int         @id @default(autoincrement())
+  accountId         Int
+  externalCampaignId String?
+  name              String?
+  status            String?
+  startDate         DateTime?
+  endDate           DateTime?
+
+  account AdAccount @relation(fields: [accountId], references: [id])
+  adsets AdSet[]
+}
+
+model AdSet {
+  id             Int        @id @default(autoincrement())
+  campaignId     Int
+  externalId     String?
+  name           String?
+  status         String?
+  budget         Float?
+
+  campaign Campaign @relation(fields: [campaignId], references: [id])
+  ads      Ad[]
+}
+
+model Ad {
+  id         Int        @id @default(autoincrement())
+  adsetId    Int
+  externalId String?
+  name       String?
+  type       String?
+  url        String?
+
+  adset   AdSet    @relation(fields: [adsetId], references: [id])
+  reports Report[]
+}
+
+model Report {
+  id        Int      @id @default(autoincrement())
+  adId      Int
+  date      DateTime
+  impressions Int?
+  clicks      Int?
+  spend       Float?
+  conversions Int?
+  revenue     Float?
+
+  ad Ad @relation(fields: [adId], references: [id])
+}
+
+model Project {
+  id        Int      @id @default(autoincrement())
+  clientId  Int
+  name      String
+  status    String?
+  notes     String?
+
+  client Client @relation(fields: [clientId], references: [id])
+}
+
+model Event {
+  id        Int      @id @default(autoincrement())
+  clientId  Int
+  title     String
+  startTime DateTime?
+  endTime   DateTime?
+
+  client Client @relation(fields: [clientId], references: [id])
+}
+
+model Competitor {
+  id         Int      @id @default(autoincrement())
+  clientId   Int
+  name       String
+  website    String?
+
+  client         Client          @relation(fields: [clientId], references: [id])
+  competitorAds CompetitorAd[]
+}
+
+model CompetitorAd {
+  id            Int      @id @default(autoincrement())
+  competitorId  Int
+  platform      String
+  adText        String?
+  url           String?
+  dateFound     DateTime?
+
+  competitor Competitor @relation(fields: [competitorId], references: [id])
+}
+Then run:
+npx prisma migrate dev --name init
+
+Database ready.
+
+🔐 5. Add Token Encryption Utility
+Create src/utils/crypto.js:
+
+import crypto from "crypto";
+
+const ALGO = "aes-256-gcm";
+
+export function encrypt(text) {
+  const iv = crypto.randomBytes(16);
+  const key = Buffer.from(process.env.ENCRYPTION_KEY);
+  const cipher = crypto.createCipheriv(ALGO, key, iv);
+
+  let encrypted = cipher.update(text, "utf8", "hex");
+  encrypted += cipher.final("hex");
+  const tag = cipher.getAuthTag().toString("hex");
+
+  return `${iv.toString("hex")}:${tag}:${encrypted}`;
+}
+
+export function decrypt(enc) {
+  const [ivHex, tagHex, data] = enc.split(":");
+  const iv = Buffer.from(ivHex, "hex");
+  const key = Buffer.from(process.env.ENCRYPTION_KEY);
+  const tag = Buffer.from(tagHex, "hex");
+
+  const decipher = crypto.createDecipheriv(ALGO, key, iv);
+  decipher.setAuthTag(tag);
+
+  let str = decipher.update(data, "hex", "utf8");
+  str += decipher.final("utf8");
+  return str;
+}
+🧩 6. Add Prisma Client Utility
+Create src/utils/prisma.js:
+import { PrismaClient } from "@prisma/client";
+export const prisma = new PrismaClient();
+🧠 7. Create API Endpoints
+Here are the minimal working API files.
+src/api/clients.js
+import express from "express";
+import { prisma } from "../utils/prisma.js";
+
+const router = express.Router();
+
+router.post("/", async (req, res) => {
+  const client = await prisma.client.create({
+    data: req.body
+  });
+  res.json(client);
+});
+
+router.get("/", async (req, res) => {
+  const clients = await prisma.client.findMany();
+  res.json(clients);
+});
+
+export default router;
+``
+src/api/tokens.js
+import express from "express";
+import { prisma } from "../utils/prisma.js";
+import { encrypt } from "../utils/crypto.js";
+
+const router = express.Router();
+
+router.post("/", async (req, res) => {
+  const { clientId, platform, accessToken, refreshToken, expiresAt } = req.body;
+
+  const token = await prisma.clientToken.upsert({
+    where: { clientId_platform: { clientId, platform } },
+    update: {
+      accessToken: encrypt(accessToken),
+      refreshToken: refreshToken ? encrypt(refreshToken) : null,
+      expiresAt: expiresAt ? new Date(expiresAt) : null
+    },
+    create: {
+      clientId,
+      platform,
+      accessToken: encrypt(accessToken),
+      refreshToken: refreshToken ? encrypt(refreshToken) : null,
+      expiresAt: expiresAt ? new Date(expiresAt) : null
+    }
+  });
+
+  res.json(token);
+});
+
+export default router;
+``
+🚦 8. Main App Entry (Express Server)
+Create src/app.js:
+import express from "express";
+import cors from "cors";
+import clients from "./api/clients.js";
+import tokens from "./api/tokens.js";
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+app.use("/clients", clients);
+app.use("/tokens", tokens);
+
+app.get("/", (req, res) => {
+  res.send("Ad Platform API is running");
+});
+
+app.listen(3000, () => console.log("Server running on http://localhost:3000"));
+🛠️ 9. Start the Server
+Run:
+node src/app.js
+
+Your API is now running.
+
+📘 10. README.md (Copy‑Paste)
+# Ad Platform Backend (Node + Express + PostgreSQL + Prisma)
+
+## Features
+- Client management
+- Token storage (encrypted)
+- Ad accounts
+- Campaigns
+- Ad sets
+- Ads
+- Reports
+- Projects & Events
+- Competitors
+
+## Setup
+1. Install Node.js & PostgreSQL
+2. Run `npm install`
+3. Create `.env` from `.env.example`
+4. Run `npx prisma migrate dev`
+5. Start server with `node src/app.js`
+
+## Folder Structure
+See `/src` for API, services, utilities.
+
+## Next Steps
+- Add Google OAuth
+- Add Meta OAuth
+- Add sync jobs
+- Build dashboard UI

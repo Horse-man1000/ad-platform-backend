@@ -1,0 +1,67 @@
+We are now in Phase 10: Metrics & Reporting (per-ad, daily).
+
+Context:
+- OAuth, Accounts, Campaigns, Ads are complete and stable.
+- This phase is READ-ONLY.
+- Campaign/ad creation is OUT OF SCOPE.
+
+--------------------------------
+SCHEMA (REQUIRED)
+--------------------------------
+Add a new Prisma model for daily ad metrics.
+
+Model (conceptually):
+- AdMetric
+- adId (FK -> Ad)
+- date (YYYY-MM-DD)
+- impressions (int)
+- clicks (int)
+- spend (decimal)
+- platform (google/meta)
+
+Constraints:
+- Unique by (adId + date)
+- Idempotent upsert only
+- No automatic deletes
+
+Create and apply a Prisma migration.
+
+--------------------------------
+ENDPOINT
+--------------------------------
+Implement:
+GET /metrics/sync?clientId=N&from=YYYY-MM-DD&to=YYYY-MM-DD
+
+--------------------------------
+BEHAVIOR
+--------------------------------
+- Validate clientId and date params
+- Load client’s ads from DB
+- For each connected platform:
+  - Refresh token if needed
+  - Fetch daily metrics for each ad in range
+  - Upsert AdMetric rows idempotently
+- Partial platform failures must NOT crash the whole request
+- Return a deterministic summary response
+
+--------------------------------
+FILES
+--------------------------------
+Create:
+- src/API/metrics/sync.route.js
+- src/Services/metrics-sync.service.js
+- src/Services/google-metrics.service.js
+- src/Services/meta-metrics.service.js
+
+Register the route in app.js.
+
+--------------------------------
+CONSTRAINTS
+--------------------------------
+- NO provider write calls
+- NO campaign/ad creation
+- NO schema changes beyond AdMetric
+- NO background jobs
+- Use existing logging + error codes
+
+Report Phase 10 complete when finished.

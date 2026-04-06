@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brand Portal — Design Mockup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet" />
+  
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --gold: #FFB400;
+      --gold-dim: #C48A00;
+      --black: #000000;
+      --surface: #0D0D0D;
+      --surface2: #141414;
+      --surface3: #1C1C1C;
+      --border: #262626;
+      --border2: #333333;
+      --white: #FFFFFF;
+      --text: #CCCCCC;
+      --muted: #666666;
+      --green: #22C55E;
+      --red: #EF4444;
+      --blue: #60A5FA;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.35), 0 8px 24px rgba(0,0,0,0.22);
+      --shadow-md: 0 12px 32px rgba(0,0,0,0.30);
+      --max-width: 1240px;
+      --nav-height: 72px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--black);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 15px;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: var(--white);
+    }
+
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(13,13,13,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      height: var(--nav-height);
+      display: flex;
+      align-items: center;
+    }
+
+    .site-header .container {
+      width: 100%;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+      gap: 16px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: 18px;
+      color: var(--white);
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--gold);
+      border-radius: 9px;
+      display: grid;
+      place-items: center;
+      color: var(--black);
+      font-size: 16px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--muted);
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      background: rgba(255,180,0,0.08);
+      color: var(--gold);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 18px;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      border: none;
+      transition: background 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s;
+      white-space: nowrap;
+      line-height: 1;
+    }
+
+    .btn-primary {
+      background: var(--gold);
+      color: var(--black);
+    }
+    .btn-primary:hover { background: var(--gold-dim); }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+    }
+    .btn-secondary:hover { background: rgba(255,180,0,0.08); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border2);
+    }
+    .btn-ghost:hover {
+      background: var(--surface3);
+      color: var(--white);
+    }
+
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 24px;
+      height: 18px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+
+    .nav-hamburger span {
+      display: block;
+      height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+      transition: all 0.2s;
+    }
+
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 200;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .mobile-nav.open { opacity: 1; }
+
+    .mobile-nav-panel {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 280px;
+      height: 100%;
+      background: var(--surface);
+      padding: 24px;
+      transform: translateX(100%);
+      transition: transform 0.25s ease;
+      overflow-y: auto;
+      border-left: 1px solid var(--border);
+    }
+
+    .mobile-nav.open .mobile-nav-panel { transform: translateX(0); }
+
+    .mobile-nav-close {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 24px;
+    }
+
+    .mobile-nav-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 24px;
+    }
+
+    .mobile-nav-links a {
+      display: block;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .mobile-nav-links a:hover {
+      background: rgba(255,180,0,0.08);
+      color: var(--gold);
+    }
+
+    .hero {
+      padding: 84px 0 72px;
+      text-align: center;
+      background:
+        radial-gradient(circle at top center, rgba(255,180,0,0.10), transparent 36%),
+        linear-gradient(180deg, rgba(255,255,255,0.02), transparent 30%);
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(255,180,0,0.08);
+      color: var(--gold);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 100px;
+      margin-bottom: 24px;
+      border: 1px solid rgba(255,180,0,0.16);
+    }
+
+    .hero-badge-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.85); }
+    }
+
+    .hero h1 {
+      font-size: clamp(34px, 5vw, 56px);
+      font-weight: 800;
+      color: var(--white);
+      max-width: 760px;
+      margin: 0 auto 20px;
+    }
+
+    .hero h1 .accent { color: var(--gold); }
+
+    .hero p {
+      font-size: 18px;
+      color: var(--text);
+      max-width: 620px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .hero-actions .btn {
+      font-size: 15px;
+      padding: 12px 24px;
+    }
+
+    .section { padding: 56px 0; }
+
+    .section-header { margin-bottom: 28px; }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .section-subtitle {
+      font-size: 15px;
+      color: var(--text);
+      margin-top: 6px;
+    }
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+      .status-grid .card {
+        padding: 20px;
+      }
+
+    .card,
+    .module-block {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .status-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .status-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .status-icon.green  { background: rgba(34,197,94,0.15); color: var(--green); }
+    .status-icon.blue   { background: rgba(96,165,250,0.15); color: var(--blue); }
+    .status-icon.amber  { background: rgba(255,180,0,0.15); color: var(--gold); }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 100px;
+    }
+
+    .status-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .status-badge.ok   { background: rgba(34,197,94,0.15); color: var(--green); }
+    .status-badge.info { background: rgba(96,165,250,0.15); color: var(--blue); }
+    .status-badge.warn { background: rgba(255,180,0,0.15); color: var(--gold); }
+
+    .status-card-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+
+    .status-card-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.1;
+      margin-bottom: 4px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .status-card-desc {
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--text);
+    }
+
+    .module-block {
+      overflow: hidden;
+    }
+
+    .module-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface);
+    }
+
+    .module-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .module-body { padding: 24px; }
+
+    .module-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    .module-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 24px 0;
+    }
+
+    .module-sub-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .form-group { margin-bottom: 16px; }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .form-label .required {
+      color: var(--red);
+      margin-left: 2px;
+    }
+
+    .form-input,
+    .form-select {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1px solid var(--border2);
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--white);
+      background: var(--surface3);
+      transition: border-color 0.15s, box-shadow 0.15s;
+      outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    .form-input::placeholder { color: var(--muted); }
+
+    .form-input:focus,
+    .form-select:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(255,180,0,0.12);
+    }
+
+    .form-select-wrapper { position: relative; }
+
+    .form-select-wrapper::after {
+      content: '▾';
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      pointer-events: none;
+      font-size: 11px;
+    }
+
+    .form-hint {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .form-footer {
+      padding-top: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .form-footer-note {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface2);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    thead { background: var(--surface); }
+
+    th {
+      padding: 10px 16px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      vertical-align: middle;
+    }
+
+    tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: var(--surface3); }
+
+    .table-platform-badge {
+      display: inline-flex;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 6px;
+    }
+
+    .badge-google { background: rgba(239,68,68,0.15); color: #FCA5A5; }
+    .badge-meta   { background: rgba(96,165,250,0.15); color: var(--blue); }
+    .badge-tiktok { background: rgba(34,197,94,0.15); color: var(--green); }
+
+    .table-actions { display: flex; gap: 8px; }
+
+    .icon-btn {
+      width: 30px;
+      height: 30px;
+      border: 1px solid var(--border2);
+      border-radius: 6px;
+      background: var(--surface3);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      font-size: 14px;
+      color: var(--text);
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+    }
+
+    .icon-btn:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+      background: rgba(255,180,0,0.08);
+    }
+
+    .platform-card {
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      background: var(--surface3);
+      border: 1px solid var(--border);
+    }
+
+    .platform-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 9px;
+      display: grid;
+      place-items: center;
+      font-size: 17px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .platform-icon.google { background: rgba(239,68,68,0.15); color: #FCA5A5; }
+    .platform-icon.meta   { background: rgba(96,165,250,0.15); color: var(--blue); }
+    .platform-icon.tiktok { background: rgba(34,197,94,0.15); color: var(--green); }
+
+    .platform-name {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--white);
+    }
+
+    .platform-note {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .step-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .step-num {
+      min-width: 28px;
+      height: 28px;
+      background: var(--gold);
+      color: var(--black);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .step-name {
+      font-weight: 600;
+      font-size: 13px;
+      margin-bottom: 2px;
+      color: var(--white);
+    }
+
+    .step-desc {
+      font-size: 12px;
+      color: var(--text);
+    }
+
+    .coming-soon-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .coming-soon-card {
+      background: var(--surface2);
+      border: 1.5px dashed var(--border2);
+      border-radius: var(--radius);
+      padding: 40px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .coming-soon-card:hover { border-color: var(--gold); }
+
+    .coming-soon-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 10px,
+        rgba(255,255,255,0.02) 10px,
+        rgba(255,255,255,0.02) 11px
+      );
+    }
+
+    .coming-soon-icon {
+      width: 58px;
+      height: 58px;
+      background: var(--surface3);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      font-size: 26px;
+      margin: 0 auto 16px;
+      position: relative;
+      color: var(--gold);
+    }
+
+    .coming-soon-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 8px;
+      position: relative;
+    }
+
+    .coming-soon-desc {
+      font-size: 13px;
+      color: var(--text);
+      margin-bottom: 20px;
+      position: relative;
+      line-height: 1.6;
+    }
+
+    .coming-soon-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface3);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 100px;
+      position: relative;
+    }
+
+    .coming-soon-pill::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    .site-footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 32px 0;
+      margin-top: 48px;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .footer-brand-text {
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    .footer-version {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .footer-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 13px;
+      color: var(--muted);
+      flex-wrap: wrap;
+    }
+
+    .footer-right a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .footer-right a:hover { color: var(--gold); }
+
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    @media (max-width: 900px) {
+      .status-grid        { grid-template-columns: 1fr 1fr; }
+      .module-grid        { grid-template-columns: 1fr; }
+      .coming-soon-grid   { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .nav-links,
+      .nav-actions        { display: none; }
+      .nav-hamburger      { display: flex; }
+      .mobile-nav         { display: block; }
+
+      .hero               { padding: 56px 0 48px; }
+      .hero h1            { font-size: 32px; }
+      .hero p             { font-size: 16px; }
+
+      .status-grid        { grid-template-columns: 1fr; }
+      .form-grid-2        { grid-template-columns: 1fr; }
+      .coming-soon-grid   { grid-template-columns: 1fr; }
+
+      .footer-inner       { flex-direction: column; align-items: flex-start; }
+      .section            { padding: 40px 0; }
+    }
+
+    @media (max-width: 360px) {
+      .container           { padding: 0 16px; }
+      .hero-actions        { flex-direction: column; align-items: stretch; }
+    }
+  </style>
+
+</head>
+<body>
+
+<!-- ================================================================
+     HEADER / NAVIGATION
+================================================================ -->
+<header class="site-header" role="banner">
+  <div class="container">
+    <nav class="nav-inner" aria-label="Main navigation">
+
+      <a href="#" class="nav-logo" aria-label="Brand Portal — home">
+        <div class="logo-icon" aria-hidden="true">A</div>
+        AdPlatform
+      </a>
+
+      <ul class="nav-links" role="list">
+        <li><a href="#status"  class="active">Dashboard</a></li>
+        <li><a href="#tokens">Tokens</a></li>
+        <li><a href="#accounts">Accounts</a></li>
+        <li><a href="#coming-soon">Campaigns</a></li>
+        <li><a href="#coming-soon">Reports</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="#tokens" class="btn btn-primary">Connect Account</a>
+      </div>
+
+      <button
+        class="nav-hamburger"
+        id="hamburgerBtn"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+        aria-controls="mobileNav"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+    </nav>
+  </div>
+</header>
+
+<!-- Mobile Navigation Overlay -->
+<div class="mobile-nav" id="mobileNav" role="dialog" aria-modal="true" aria-label="Navigation menu">
+  <div class="mobile-nav-panel">
+    <div class="mobile-nav-close">
+      <button class="btn btn-ghost" id="mobileNavClose" aria-label="Close navigation menu">✕ Close</button>
+    </div>
+    <ul class="mobile-nav-links" role="list">
+      <li><a href="#status">Dashboard</a></li>
+      <li><a href="#tokens">Tokens</a></li>
+      <li><a href="#accounts">Accounts</a></li>
+      <li><a href="#coming-soon">Campaigns</a></li>
+      <li><a href="#coming-soon">Reports</a></li>
+    </ul>
+    <a href="#tokens" class="btn btn-primary" style="width: 100%;">Connect Account</a>
+  </div>
+</div>
+
+
+<!-- ================================================================
+     HERO
+================================================================ -->
+<section class="hero" aria-labelledby="heroHeading">
+  <div class="container">
+
+    <div class="hero-badge" aria-label="Platform status: API is live">
+      <span class="hero-badge-dot" aria-hidden="true"></span>
+      API Live &mdash; v1.0.0
+    </div>
+
+    <h1 id="heroHeading">
+      Manage all your <span class="accent">Ad Accounts</span><br>in one place
+    </h1>
+
+    <p>
+      Connect Google, Meta, and TikTok ad accounts.
+      Track tokens, sync campaigns, and build reports &mdash;
+      all from one unified platform.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#tokens"  class="btn btn-primary">Connect an Account</a>
+      <a href="#status"  class="btn btn-secondary">View Platform Status</a>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ================================================================
+     STATUS CARDS
+================================================================ -->
+<section class="section" id="status" aria-labelledby="statusHeading">
+  <div class="container">
+
+    <div class="section-header">
+      <div class="section-label" aria-hidden="true">Platform Overview</div>
+      <h2 class="section-title" id="statusHeading">System Status</h2>
+      <p class="section-subtitle">Live health and version information for the Ad Platform API.</p>
+    </div>
+
+    <div class="status-grid" role="list">
+
+      <!-- API Health -->
+      <article class="card" role="listitem" aria-label="API Health: Operational">
+        <div class="status-card-header">
+          <div class="status-icon green" aria-hidden="true">&#10003;</div>
+          <span class="status-badge ok">Operational</span>
+        </div>
+        <div class="status-card-title">API Health</div>
+        <div class="status-card-value">Healthy</div>
+        <div class="status-card-desc">All systems responding normally</div>
+      </article>
+
+      <!-- Version -->
+      <article class="card" role="listitem" aria-label="Platform version 1.0.0, stable">
+        <div class="status-card-header">
+          <div class="status-icon blue" aria-hidden="true">&#9670;</div>
+          <span class="status-badge info">Stable</span>
+        </div>
+        <div class="status-card-title">Version</div>
+        <div class="status-card-value">1.0.0</div>
+        <div class="status-card-desc">Environment: Development</div>
+      </article>
+
+      <!-- Connections -->
+      <article class="card" role="listitem" aria-label="3 active connections">
+        <div class="status-card-header">
+          <div class="status-icon amber" aria-hidden="true">&#9889;</div>
+          <span class="status-badge warn">3 Active</span>
+        </div>
+        <div class="status-card-title">Connections</div>
+        <div class="status-card-value">3</div>
+        <div class="status-card-desc">Accounts linked across platforms</div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ================================================================
+     TOKENS MODULE
+================================================================ -->
+<section class="section" id="tokens" aria-labelledby="tokensHeading">
+  <div class="container">
+
+    <div class="section-header">
+      <div class="section-label" aria-hidden="true">Authentication</div>
+      <h2 class="section-title" id="tokensHeading">Access Tokens</h2>
+      <p class="section-subtitle">Save and manage OAuth access tokens for each connected platform.</p>
+    </div>
+
+    <div class="module-block">
+      <div class="module-header">
+        <h3 class="module-title">Add Token</h3>
+        <span class="status-badge ok">Module Active</span>
+      </div>
+
+      <div class="module-body">
+        <div class="module-grid">
+
+          <!-- LEFT: Token form -->
+          <div>
+            <form aria-label="Add access token form">
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label class="form-label" for="tokenClientId">
+                    Client ID <span class="required" aria-hidden="true">*</span>
+                  </label>
+                  <input
+                    class="form-input"
+                    type="text"
+                    id="tokenClientId"
+                    name="clientId"
+                    placeholder="e.g. client_abc123"
+                    autocomplete="off"
+                    required
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="tokenPlatform">
+                    Platform <span class="required" aria-hidden="true">*</span>
+                  </label>
+                  <div class="form-select-wrapper">
+                    <select class="form-select" id="tokenPlatform" name="platform" required>
+                      <option value="" disabled selected>Select platform&hellip;</option>
+                      <option value="GOOGLE">Google</option>
+                      <option value="META">Meta</option>
+                      <option value="TIKTOK">TikTok</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="accessToken">
+                  Access Token <span class="required" aria-hidden="true">*</span>
+                </label>
+                <input
+                  class="form-input"
+                  type="text"
+                  id="accessToken"
+                  name="accessToken"
+                  placeholder="Paste your access token here"
+                  autocomplete="off"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="refreshToken">Refresh Token</label>
+                <input
+                  class="form-input"
+                  type="text"
+                  id="refreshToken"
+                  name="refreshToken"
+                  placeholder="Optional — paste refresh token"
+                  autocomplete="off"
+                />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="expiresAt">Expires At</label>
+                <input
+                  class="form-input"
+                  type="datetime-local"
+                  id="expiresAt"
+                  name="expiresAt"
+                />
+                <p class="form-hint">Leave blank if the token does not expire.</p>
+              </div>
+
+              <div class="form-footer">
+                <p class="form-footer-note">
+                  Fields marked <span style="color: var(--danger);">*</span> are required.
+                </p>
+                <button type="submit" class="btn btn-primary">Save Token</button>
+              </div>
+
+            </form>
+          </div>
+
+          <!-- RIGHT: Platform support info -->
+          <div>
+            <p class="module-sub-title">Supported Platforms</p>
+
+            <article class="card platform-card" aria-label="Google Ads — OAuth 2.0 with Refresh Token">
+              <div class="platform-icon google" aria-hidden="true">G</div>
+              <div>
+                <div class="platform-name">Google Ads</div>
+                <div class="platform-note">OAuth 2.0 &bull; Refresh Token</div>
+              </div>
+              <span class="status-badge ok" style="margin-left: auto;">Ready</span>
+            </article>
+
+            <article class="card platform-card" aria-label="Meta Ads — OAuth 2.0 Long-lived token">
+              <div class="platform-icon meta" aria-hidden="true">f</div>
+              <div>
+                <div class="platform-name">Meta Ads</div>
+                <div class="platform-note">OAuth 2.0 &bull; Long-lived Token</div>
+              </div>
+              <span class="status-badge ok" style="margin-left: auto;">Ready</span>
+            </article>
+
+            <article class="card platform-card" aria-label="TikTok Ads — OAuth 2.0">
+              <div class="platform-icon tiktok" aria-hidden="true">T</div>
+              <div>
+                <div class="platform-name">TikTok Ads</div>
+                <div class="platform-note">OAuth 2.0 &bull; Access Token</div>
+              </div>
+              <span class="status-badge ok" style="margin-left: auto;">Ready</span>
+            </article>
+          </div>
+
+        </div><!-- /module-grid -->
+
+        <div class="module-divider"></div>
+
+        <p class="module-sub-title">Saved Tokens</p>
+
+        <div class="table-wrapper">
+          <table aria-label="Saved access tokens">
+            <thead>
+              <tr>
+                <th scope="col">Client ID</th>
+                <th scope="col">Platform</th>
+                <th scope="col">Expires At</th>
+                <th scope="col">Status</th>
+                <th scope="col"><span class="sr-only">Row actions</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>client_abc123</td>
+                <td><span class="table-platform-badge badge-google">Google</span></td>
+                <td>2026-06-01 12:00</td>
+                <td><span class="status-badge ok">Valid</span></td>
+                <td>
+                  <div class="table-actions">
+                    <button class="icon-btn" aria-label="Edit token for client_abc123" title="Edit">&#9998;</button>
+                    <button class="icon-btn" aria-label="Delete token for client_abc123" title="Delete">&#10005;</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>client_xyz789</td>
+                <td><span class="table-platform-badge badge-meta">Meta</span></td>
+                <td>2026-05-15 08:30</td>
+                <td><span class="status-badge ok">Valid</span></td>
+                <td>
+                  <div class="table-actions">
+                    <button class="icon-btn" aria-label="Edit token for client_xyz789" title="Edit">&#9998;</button>
+                    <button class="icon-btn" aria-label="Delete token for client_xyz789" title="Delete">&#10005;</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div><!-- /module-body -->
+    </div><!-- /module-block -->
+
+  </div>
+</section>
+
+
+<!-- ================================================================
+     ACCOUNTS MODULE
+================================================================ -->
+<section class="section" id="accounts" aria-labelledby="accountsHeading">
+  <div class="container">
+
+    <div class="section-header">
+      <div class="section-label" aria-hidden="true">Ad Accounts</div>
+      <h2 class="section-title" id="accountsHeading">Accounts</h2>
+      <p class="section-subtitle">Link external ad account IDs from each platform to a client record.</p>
+    </div>
+
+    <div class="module-block">
+      <div class="module-header">
+        <h3 class="module-title">Add Account</h3>
+        <span class="status-badge ok">Module Active</span>
+      </div>
+
+      <div class="module-body">
+        <div class="module-grid">
+
+          <!-- LEFT: Account form -->
+          <div>
+            <form aria-label="Add ad account form">
+
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label class="form-label" for="accountClientId">
+                    Client ID <span class="required" aria-hidden="true">*</span>
+                  </label>
+                  <input
+                    class="form-input"
+                    type="text"
+                    id="accountClientId"
+                    name="clientId"
+                    placeholder="e.g. client_abc123"
+                    autocomplete="off"
+                    required
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="accountPlatform">
+                    Platform <span class="required" aria-hidden="true">*</span>
+                  </label>
+                  <div class="form-select-wrapper">
+                    <select class="form-select" id="accountPlatform" name="platform" required>
+                      <option value="" disabled selected>Select platform&hellip;</option>
+                      <option value="GOOGLE">Google</option>
+                      <option value="META">Meta</option>
+                      <option value="TIKTOK">TikTok</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="externalAccountId">
+                  External Account ID <span class="required" aria-hidden="true">*</span>
+                </label>
+                <input
+                  class="form-input"
+                  type="text"
+                  id="externalAccountId"
+                  name="externalAccountId"
+                  placeholder="e.g. 123-456-7890"
+                  autocomplete="off"
+                  required
+                />
+                <p class="form-hint">The account ID as shown in your ad platform dashboard.</p>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="accountName">Account Name</label>
+                <input
+                  class="form-input"
+                  type="text"
+                  id="accountName"
+                  name="name"
+                  placeholder="e.g. Acme Corp &mdash; Google Ads"
+                  autocomplete="off"
+                />
+              </div>
+
+              <div class="form-footer">
+                <p class="form-footer-note">
+                  Fields marked <span style="color: var(--danger);">*</span> are required.
+                </p>
+                <button type="submit" class="btn btn-primary">Save Account</button>
+              </div>
+
+            </form>
+          </div>
+
+          <!-- RIGHT: How it works -->
+          <div>
+            <p class="module-sub-title">How Accounts Work</p>
+
+            <div class="card" style="padding: 20px; background: #FAFBFC; border-style: dashed;">
+              <div class="step-list">
+                <div class="step-item">
+                  <div class="step-num" aria-hidden="true">1</div>
+                  <div>
+                    <div class="step-name">Connect a Client</div>
+                    <div class="step-desc">Each account is linked to a client record in the system.</div>
+                  </div>
+                </div>
+                <div class="step-item">
+                  <div class="step-num" aria-hidden="true">2</div>
+                  <div>
+                    <div class="step-name">Choose a Platform</div>
+                    <div class="step-desc">Select Google, Meta, or TikTok for this account.</div>
+                  </div>
+                </div>
+                <div class="step-item">
+                  <div class="step-num" aria-hidden="true">3</div>
+                  <div>
+                    <div class="step-name">Enter the Account ID</div>
+                    <div class="step-desc">Use the external account ID from your platform dashboard.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /module-grid -->
+
+        <div class="module-divider"></div>
+
+        <p class="module-sub-title">Saved Accounts</p>
+
+        <div class="table-wrapper">
+          <table aria-label="Saved ad accounts">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Client ID</th>
+                <th scope="col">Platform</th>
+                <th scope="col">External Account ID</th>
+                <th scope="col"><span class="sr-only">Row actions</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Acme Corp &mdash; Google</td>
+                <td>client_abc123</td>
+                <td><span class="table-platform-badge badge-google">Google</span></td>
+                <td>123-456-7890</td>
+                <td>
+                  <div class="table-actions">
+                    <button class="icon-btn" aria-label="Edit Acme Corp Google account" title="Edit">&#9998;</button>
+                    <button class="icon-btn" aria-label="Delete Acme Corp Google account" title="Delete">&#10005;</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Globex &mdash; Meta Ads</td>
+                <td>client_xyz789</td>
+                <td><span class="table-platform-badge badge-meta">Meta</span></td>
+                <td>act_987654321</td>
+                <td>
+                  <div class="table-actions">
+                    <button class="icon-btn" aria-label="Edit Globex Meta account" title="Edit">&#9998;</button>
+                    <button class="icon-btn" aria-label="Delete Globex Meta account" title="Delete">&#10005;</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>Initech &mdash; TikTok</td>
+                <td>client_lmn456</td>
+                <td><span class="table-platform-badge badge-tiktok">TikTok</span></td>
+                <td>tt_acc_001122</td>
+                <td>
+                  <div class="table-actions">
+                    <button class="icon-btn" aria-label="Edit Initech TikTok account" title="Edit">&#9998;</button>
+                    <button class="icon-btn" aria-label="Delete Initech TikTok account" title="Delete">&#10005;</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div><!-- /module-body -->
+    </div><!-- /module-block -->
+
+  </div>
+</section>
+
+
+<!-- ================================================================
+     COMING SOON
+================================================================ -->
+<section class="section" id="coming-soon" aria-labelledby="comingSoonHeading">
+  <div class="container">
+
+    <div class="section-header">
+      <div class="section-label" aria-hidden="true">Roadmap</div>
+      <h2 class="section-title" id="comingSoonHeading">Coming Soon</h2>
+      <p class="section-subtitle">
+        These modules are in active development and will be available in upcoming releases.
+      </p>
+    </div>
+
+    <div class="coming-soon-grid">
+
+      <article class="coming-soon-card" aria-label="Clients module — coming soon">
+        <div class="coming-soon-icon" aria-hidden="true">&#128101;</div>
+        <h3 class="coming-soon-title">Clients</h3>
+        <p class="coming-soon-desc">
+          Full client management with profiles, platform links, and account history.
+        </p>
+        <span class="coming-soon-pill">In Development</span>
+      </article>
+
+      <article class="coming-soon-card" aria-label="Campaigns module — coming soon">
+        <div class="coming-soon-icon" aria-hidden="true">&#128226;</div>
+        <h3 class="coming-soon-title">Campaigns</h3>
+        <p class="coming-soon-desc">
+          Sync and manage ad campaigns across Google, Meta, and TikTok from a single dashboard.
+        </p>
+        <span class="coming-soon-pill">In Development</span>
+      </article>
+
+      <article class="coming-soon-card" aria-label="Reports module — coming soon">
+        <div class="coming-soon-icon" aria-hidden="true">&#128202;</div>
+        <h3 class="coming-soon-title">Reports</h3>
+        <p class="coming-soon-desc">
+          Cross-platform performance reports with spend, impressions, and conversion data.
+        </p>
+        <span class="coming-soon-pill">In Development</span>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ================================================================
+     FOOTER
+================================================================ -->
+<footer class="site-footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-inner">
+
+      <div class="footer-left">
+        <div class="logo-icon" aria-hidden="true">A</div>
+        <div>
+          <p class="footer-brand-text"><strong>Brand Portal</strong> &mdash; Multi-platform ad management</p>
+          <p class="footer-version">Version 1.0.0 &bull; Development Build</p>
+        </div>
+      </div>
+
+      <div class="footer-right" aria-label="Footer navigation">
+        <a href="#status">Dashboard</a>
+        <a href="#tokens">Tokens</a>
+        <a href="#accounts">Accounts</a>
+        <a href="#coming-soon">Roadmap</a>
+        <span>&copy; 2026 Brand Portal</span>
+      </div>
+
+    </div>
+  </div>
+</footer>
+
+
+<script>
+  /* ============================================================
+     Mobile menu toggle
+  ============================================================ */
+  const hamburger    = document.getElementById('hamburgerBtn');
+  const mobileNav    = document.getElementById('mobileNav');
+  const mobileClose  = document.getElementById('mobileNavClose');
+
+  function openMenu() {
+    mobileNav.style.display = 'block';
+    requestAnimationFrame(() => mobileNav.classList.add('open'));
+    hamburger.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+    mobileClose.focus();
+  }
+
+  function closeMenu() {
+    mobileNav.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    setTimeout(() => { mobileNav.style.display = 'none'; }, 220);
+    hamburger.focus();
+  }
+
+  hamburger.addEventListener('click', openMenu);
+  mobileClose.addEventListener('click', closeMenu);
+
+  // Tap backdrop to close
+  mobileNav.addEventListener('click', (e) => {
+    if (e.target === mobileNav) closeMenu();
+  });
+
+  // Close on any mobile nav link click
+  mobileNav.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
+
+  // Close on Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && mobileNav.classList.contains('open')) closeMenu();
+  });
+
+  /* ============================================================
+     Scrollspy — highlight active nav link
+  ============================================================ */
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks  = document.querySelectorAll('.nav-links a');
+
+  const spy = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => {
+          link.classList.toggle(
+            'active',
+            link.getAttribute('href') === '#' + entry.target.id
+          );
+        });
+      }
+    });
+  }, { rootMargin: '-25% 0px -65% 0px' });
+
+  sections.forEach(s => spy.observe(s));
+</script>
+
+</body>
+</html>

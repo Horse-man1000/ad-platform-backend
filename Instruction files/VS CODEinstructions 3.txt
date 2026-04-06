@@ -1,0 +1,124 @@
+======================================================
+AD-PLATFORM BACKEND — PHASE 4 INSTRUCTIONS FOR VSCODE
+======================================================
+
+CONTEXT:
+We have completed Phase 3 with the architect AI. 
+Phase 3 was **planning-only**, defining the OAuth architecture for 
+Google Ads + Meta Ads. No implementation was done yet.
+
+Phase 3 established the following architecture decisions:
+
+1. Clients (not the developer) authenticate themselves.
+2. We will support BOTH Google Ads and Meta Ads.
+3. OAuth flows require the following backend routes:
+   - GET /auth/google
+   - GET /auth/google/callback
+   - GET /auth/meta
+   - GET /auth/meta/callback
+4. Tokens will be stored in the existing ClientTokens table.
+5. All tokens must be encrypted at rest using ENCRYPTION_KEY.
+6. Real OAuth logic, token exchange, and refresh logic 
+   will be implemented later in Phase 5.
+7. Phase 4 MUST NOT implement real OAuth or business logic.
+
+======================================================
+PHASE 4 OBJECTIVE:
+Create SCAFFOLDING ONLY for the OAuth system.
+
+This means:
+- Create folders
+- Create files
+- Create placeholder functions
+- Add TODO comments
+- Register routes
+- DO NOT connect to external APIs
+- DO NOT add real OAuth logic
+
+======================================================
+TASKS FOR VSCODE IN PHASE 4
+======================================================
+
+1. CREATE FOLDERS (if not already present):
+   src/api/auth/
+   src/services/oauth/
+   src/utils/
+
+2. CREATE PLACEHOLDER ROUTE FILES:
+   src/api/auth/google.route.js
+   src/api/auth/meta.route.js
+
+   Each route file must export an Express router with EMPTY handlers:
+   - GET /auth/google
+   - GET /auth/google/callback
+   - GET /auth/meta
+   - GET /auth/meta/callback
+   Use ONLY placeholder logic and TODO comments.
+
+3. CREATE PLACEHOLDER SERVICE FILES:
+   src/services/oauth/google.service.js
+   src/services/oauth/meta.service.js
+
+   Each file must contain exported placeholder functions:
+   - initiateAuth()
+   - handleCallback()
+   - (Optional) refreshToken()
+
+   These MUST NOT contain real OAuth logic.
+
+4. CREATE OAUTH UTILITY FILE:
+   src/utils/oauth.util.js
+
+   This should contain placeholder helpers:
+   - buildAuthURL()
+   - parseCallbackParams()
+   - encrypt/decrypt placeholders (TODO: real logic in Phase 5)
+
+5. REGISTER ROUTES IN app.js
+   Import the new route files and attach them, for example:
+   app.use("/auth/google", googleRouter);
+   app.use("/auth/meta", metaRouter);
+
+   These must point to the placeholder route files.
+
+======================================================
+STRICT DO-NOT LIST
+======================================================
+
+You MUST NOT do the following:
+
+❌ No calls to Google Ads API  
+❌ No calls to Meta Marketing API  
+❌ No OAuth token exchange  
+❌ No access token or refresh token logic  
+❌ No encryption logic  
+❌ No database writes  
+❌ No schema changes  
+❌ No business logic  
+❌ No environment variable modifications  
+❌ No campaign creation logic  
+❌ No reading/writing real data  
+
+This phase is STRUCTURE ONLY.
+
+======================================================
+WHEN TO RETURN TO ARCHITECT AI
+======================================================
+
+Once you finish:
+- the folders,
+- the placeholder files,
+- the placeholder functions,
+- the TODO comments,
+- the route registration,
+
+...inform the user that **Phase 4 is complete**.
+
+At that point, the user will return to the architect AI to begin:
+
+PHASE 5 — REAL OAUTH IMPLEMENTATION
+(Google OAuth, Meta OAuth, token encryption, refresh logic, and account syncing.)
+
+======================================================
+END OF PHASE 4 INSTRUCTIONS
+======================================================

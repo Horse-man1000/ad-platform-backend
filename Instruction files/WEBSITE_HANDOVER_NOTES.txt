@@ -1,0 +1,140 @@
+AD PLATFORM - WEBSITE HANDOVER NOTES
+Date: 2026-03-30
+Audience: Next frontend/web implementer
+
+==================================================
+1) PROJECT STATUS SUMMARY
+==================================================
+Backend is partially implemented.
+
+Live and usable now:
+- Health endpoint
+- Version endpoint
+- Tokens module (save + fetch)
+- Accounts module (save + fetch)
+
+Not ready yet (placeholder only):
+- Clients module
+- Campaigns module
+- Reports module
+- OAuth login/connect flows
+- Background sync jobs
+- Full auth/permissions
+
+==================================================
+2) WHAT THE WEBSITE SHOULD BUILD NOW
+==================================================
+Build these real pages/features now:
+- App shell and routing
+- Health/Version status widget
+- Tokens form (save)
+- Tokens lookup view (fetch by client + platform)
+- Accounts form (save)
+- Accounts lookup view (fetch by account id)
+
+Use mock data for now:
+- Clients pages
+- Campaigns pages
+- Reports pages
+- OAuth-related pages/buttons
+
+==================================================
+3) LIVE API ENDPOINTS (CURRENT CONTRACT)
+==================================================
+Global:
+- GET /
+- GET /health
+- GET /version
+
+Tokens:
+- GET /api/tokens/
+- POST /api/tokens
+- GET /api/tokens/:clientId/:platform
+
+Accounts:
+- GET /api/accounts/
+- POST /api/accounts
+- GET /api/accounts/:id
+
+Placeholder only:
+- /api/clients
+- /api/campaigns
+- /api/reports
+
+==================================================
+4) IMPORTANT BEHAVIOR FOR FRONTEND
+==================================================
+- Platform values are normalized to lowercase by backend.
+- Token values are masked in responses (security behavior).
+- Validation errors and not-found states are returned as JSON with status codes.
+
+Expected status patterns:
+- 200/201 success
+- 400 invalid input
+- 404 not found
+- 500 server error
+
+UI should map errors by BOTH:
+- HTTP status code
+- JSON message field
+
+==================================================
+5) DATE/TIME HANDLING
+==================================================
+- For token expiry fields, send ISO-8601 UTC datetime strings.
+- Treat returned datetimes as UTC in data handling.
+- Only localize for user display in UI layer.
+
+==================================================
+6) RECOMMENDED FRONTEND ARCHITECTURE
+==================================================
+Create one shared API client layer.
+
+Reason:
+- Keeps fetch logic in one place.
+- Gives consistent error handling across pages.
+- Reduces duplication and speeds up future module additions.
+
+Recommended API functions:
+- getHealth()
+- getVersion()
+- saveToken(payload)
+- getToken(clientId, platform)
+- saveAccount(payload)
+- getAccount(id)
+
+Each function should:
+- Call backend endpoint
+- Parse JSON safely
+- Return normalized success shape
+- Throw normalized error shape: { status, message, raw }
+
+==================================================
+7) HANDOVER FILES TO READ FIRST
+==================================================
+Read these before coding:
+- FRONTEND_HANDOVER.md
+- FRONTEND_API_CONTRACT.md
+- ROUTE_STRUCTURE.md
+- DATABASE_STRUCTURE.md
+
+==================================================
+8) IMPLEMENTATION ORDER (SUGGESTED)
+==================================================
+1. Build shared API client module.
+2. Build Health/Version panel.
+3. Build Tokens save + lookup flow.
+4. Build Accounts save + lookup flow.
+5. Add placeholder UI pages with mock data for clients/campaigns/reports.
+6. Add loading, empty, validation, and server error states.
+
+==================================================
+9) DEFINITION OF DONE FOR THIS PHASE
+==================================================
+- User can see backend health/version in website UI.
+- User can create and fetch token records through UI.
+- User can create and fetch account records through UI.
+- Placeholder modules are clearly marked as "Coming Soon" or mock.
+- All implemented pages have clear 400/404/500 state handling.
+
+END OF HANDOVER

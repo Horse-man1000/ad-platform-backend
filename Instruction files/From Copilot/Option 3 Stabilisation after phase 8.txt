@@ -1,0 +1,110 @@
+We are entering Option 3: Stabilisation & Polish.
+
+IMPORTANT CONTEXT:
+- OAuth (Phase 5) is complete.
+- Account sync (Phase 7) is complete.
+- Campaign reading sync (Phase 8) is complete.
+- Campaign creation is explicitly OUT OF SCOPE.
+- No new features should be added.
+
+This task is POLISH only, not expansion.
+
+--------------------------------
+OBJECTIVE
+--------------------------------
+Improve maintainability, observability, and consistency of the existing backend WITHOUT changing functionality.
+
+--------------------------------
+TASKS TO PERFORM
+--------------------------------
+
+1. LIGHTWEIGHT LOGGING
+Add simple, readable logs (console-level is fine) for:
+- /accounts/sync start + finish
+- /campaigns/sync start + finish
+
+Logs MUST:
+- Include clientId
+- Include platform (google/meta when applicable)
+- Include success/failure
+- Include counts added/updated
+
+Logs MUST NOT:
+- Log OAuth tokens
+- Log secrets
+- Log raw provider responses
+
+--------------------------------
+
+2. CENTRALISE ERROR CODES
+Create a single shared place for error codes, e.g.:
+- src/Utils/error-codes.js
+
+Move any repeated error strings or codes into this file.
+Services should return error codes.
+Routes should map error codes to HTTP responses.
+
+DO NOT change existing error behaviour.
+This is purely structural cleanup.
+
+--------------------------------
+
+3. RESPONSE CONSISTENCY CHECK
+Ensure all sync endpoints:
+- Return "status"
+- Return "clientId"
+- Return per-platform blocks
+
+Ensure all error responses:
+- Use status: "error"
+- Have a clear, human-readable message
+- Do NOT expose raw provider or internal errors
+
+--------------------------------
+
+4. BASIC SANITY VALIDATION
+No full test suite needed.
+
+Verify manually that:
+- Missing clientId → 400
+- Unknown client → 404
+- Known client with no tokens → 200, connected=false
+- Known client with tokens → 200, deterministic summary
+
+--------------------------------
+
+5. SYSTEM OVERVIEW DOCUMENT
+Create a new doc:
+- SYSTEM_OVERVIEW.md
+
+Contents should include:
+- What this backend does
+- What it explicitly does NOT do (no campaign creation)
+- High-level data flow: OAuth → Accounts → Campaigns
+- How to trigger sync endpoints
+- Example normal response shapes
+
+Keep it short and readable.
+
+--------------------------------
+STRICT DO-NOT LIST
+--------------------------------
+DO NOT:
+- Add new endpoints
+- Add provider write calls
+- Add campaign creation logic
+- Change database schema
+- Add migrations
+- Add background jobs
+- Add deployment logic
+- Add performance optimisations beyond logging
+
+--------------------------------
+COMPLETION SIGNAL
+--------------------------------
+When finished, report:
+- What files were touched
+- Confirm no behaviour changes
+- Confirm no scope expansion
+
+Option 3 is complete when code is cleaner, safer, and more readable — not when it does more.

@@ -1,0 +1,82 @@
+We are now in Phase 7: REAL Account Sync Logic.
+
+Phase 6 scaffolding is complete.
+OAuth (Phase 5) is fully implemented and working.
+
+Your task is to replace placeholders with real sync logic.
+
+IMPORTANT RULES:
+- Implement idempotent sync logic (safe to call repeatedly)
+- Do NOT delete accounts automatically
+- Only insert new accounts or update existing ones
+- Assume OAuth tokens already exist and are valid
+- Use existing token refresh helpers
+- Use Prisma for all DB access
+
+--------------------------------
+ENDPOINT
+--------------------------------
+Implement:
+GET /accounts/sync?clientId=N
+
+Behavior:
+- Validate clientId
+- Detect which platforms are connected (Google, Meta)
+- Sync each connected platform
+- Return a summary response
+
+Response shape:
+{
+  "status": "ok",
+  "clientId": N,
+  "platforms": {
+    "google": {
+      "connected": boolean,
+      "synced": boolean,
+      "accountsAdded": number,
+      "accountsUpdated": number
+    },
+    "meta": {
+      "connected": boolean,
+      "synced": boolean,
+      "accountsAdded": number,
+      "accountsUpdated": number
+    }
+  }
+}
+
+--------------------------------
+GOOGLE SYNC
+--------------------------------
+In src/Services/google-sync.service.js:
+- Use Google Ads API
+- List accessible customers
+- Fetch account metadata (id, name, currency, timezone, status)
+- Upsert into AdAccount using:
+  (clientId + platform + externalAccountId)
+
+--------------------------------
+META SYNC
+--------------------------------
+In src/Services/meta-sync.service.js:
+- Call Graph API /me/adaccounts
+- Extract id, name, currency, timezone, status
+- Upsert into AdAccount
+
+--------------------------------
+ERROR HANDLING
+--------------------------------
+Return clean responses:
+- No token → connected=false
+- Token refresh fails → synced=false
+- Platform failure → synced=false with reason
+
+--------------------------------
+CONSTRAINTS
+--------------------------------
+- No schema changes
+- No migrations
+- No campaign syncing yet
+- No frontend assumptions
+
+When finished, report Phase 7 as complete.

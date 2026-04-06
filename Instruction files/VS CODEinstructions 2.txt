@@ -1,0 +1,170 @@
+========================================
+AD-PLATFORM BACKEND — VSCODE WORKFLOW GUIDE
+========================================
+
+IMPORTANT:  
+This file explains:
+- What phase the project is in  
+- What tasks you (the VSCode AI) are allowed to perform  
+- What tasks MUST be handled outside VSCode  
+- When the user will return to the external architect (the other AI)
+
+Please follow these instructions strictly.
+
+----------------------------------------
+1. PROJECT SUMMARY (For Context)
+----------------------------------------
+This backend project is for consolidating advertising data across platforms.
+It is NOT a campaign creation tool and MUST NOT include:
+- Campaign publishing
+- Ad creation
+- OAuth write scopes
+- Creative upload
+- Media workflows
+
+The backend's job is ONLY:
+- Store clients, tokens, and ad account info
+- Read data from ad platforms (later)
+- Provide reporting endpoints (later)
+- Serve data to a frontend dashboard
+- Maintain clean architecture and structure
+
+----------------------------------------
+2. CURRENT DEVELOPMENT PHASE
+----------------------------------------
+The project is currently in:
+
+PHASE 2 — BACKEND SKELETON STRUCTURE
+
+Everything below is ALREADY COMPLETE:
+- Express server running
+- Prisma configured
+- PostgreSQL installed
+- Database created
+- Prisma schema created
+- Migration applied successfully
+- Folder structure started
+- Environment variables working
+
+Nothing in this phase involves:
+- External APIs
+- OAuth
+- Token encryption
+- Sync jobs
+- Real business logic
+
+----------------------------------------
+3. WHAT YOU (VSCODE AI) SHOULD DO NOW
+----------------------------------------
+Your tasks in Phase 2:
+
+✅ Create folders:
+  - src/api/
+  - src/services/
+  - src/utils/
+  - src/config/ (optional but recommended)
+
+✅ Create placeholder route files:
+  - clients.route.js
+  - tokens.route.js
+  - accounts.route.js
+  - campaigns.route.js
+  - reports.route.js
+
+✅ Create placeholder service files:
+  - clients.service.js
+  - tokens.service.js
+  - accounts.service.js
+  - campaigns.service.js
+  - reports.service.js
+
+✅ Create simple debug endpoints:
+  - /health  → Return status: "ok"
+  - /version → Return backend version
+
+✅ Register all routes in app.js
+(Empty handlers only. No functionality.)
+
+✅ Create documentation scaffolding:
+  - ROUTE_STRUCTURE.md
+  - SERVICE_STRUCTURE.md
+  - ENVIRONMENT.md
+  - FOLDER_STRUCTURE.md
+
+✅ Maintain consistent file naming and imports.
+
+----------------------------------------
+4. WHAT YOU MUST **NOT** DO
+----------------------------------------
+
+❌ Do NOT implement business logic  
+❌ Do NOT integrate Google Ads API  
+❌ Do NOT integrate Meta/Facebook API  
+❌ Do NOT add OAuth  
+❌ Do NOT add token encryption  
+❌ Do NOT add campaign syncing  
+❌ Do NOT build campaign creation workflow  
+❌ Do NOT modify the Prisma schema  
+❌ Do NOT generate SQL or migrations  
+❌ Do NOT change .env contents
+
+These will be handled later by the architect AI.
+
+----------------------------------------
+5. WHEN THE USER WILL RETURN TO THE ARCHITECT AI
+----------------------------------------
+The user will return to the architect AI for:
+
+1. **Phase 3 — OAuth Design**
+   - Google Ads auth flow
+   - Meta Ads auth flow
+   - Token refresh logic
+   - OAuth redirect routes
+   - Security planning
+
+2. **Phase 4 — Sync Engine**
+   - Campaign syncing
+   - Ad syncing
+   - Daily report ingestion
+   - Cron jobs
+   - SDK integration
+
+3. **Phase 5 — Real API Logic**
+   - Implementations inside services/
+
+4. **Any architectural decisions**
+   - Naming conventions
+   - Data modeling
+   - Backend structure
+   - Cross‑project boundaries
+   - Planning future features
+
+VSCode AI MUST NOT attempt these tasks.
+
+----------------------------------------
+6. HOW YOU SHOULD OPERATE
+----------------------------------------
+Please follow these rules:
+
+1. Always stay inside Phase 2 unless explicitly told otherwise.
+2. Ask for confirmation before creating many files at once.
+3. Only generate placeholder code.
+4. Keep routes empty or returning simple JSON stubs.
+5. Respect the folder structure.
+6. Keep changes clean and modular.
+7. Avoid altering app.js beyond route registration.
+
+----------------------------------------
+7. SUMMARY OF YOUR MISSION IN THIS PHASE
+----------------------------------------
+Your goal:
+- Build the skeleton structure
+- Build placeholder files
+- Document the project
+- Prepare for real code later
+
+Do NOT implement real logic.
+
+========================================
+END OF DOCUMENT
+========================================

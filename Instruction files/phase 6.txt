@@ -1,0 +1,25 @@
+We are now in Phase 6: Account Sync Engine (structure only).
+
+Do NOT implement real API calls.
+Do NOT assume tokens exist.
+Do NOT add business logic.
+
+Create scaffolding only.
+
+1. Create route:
+   src/api/accounts/sync.route.js
+
+2. Create services:
+   src/services/accounts-sync.service.js
+   src/services/google-sync.service.js
+   src/services/meta-sync.service.js
+
+3. Each file should:
+   - Export empty placeholder functions
+   - Contain clear TODO comments
+   - Return stub responses only
+
+4. Register /accounts/sync in app.js.
+
+This phase is structure-only.
+Real Google/Meta API logic comes later.

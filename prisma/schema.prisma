@@ -1,0 +1,156 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Client {
+  id        Int           @id @default(autoincrement())
+  name      String
+  email     String?
+  createdAt DateTime      @default(now())
+
+  tokens      ClientToken[]
+  accounts    AdAccount[]
+  projects    Project[]
+  events      Event[]
+  competitors Competitor[]
+}
+
+model ClientToken {
+  id           Int      @id @default(autoincrement())
+  clientId     Int
+  platform     String
+  accessToken  String
+  refreshToken String?
+  expiresAt    DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  client Client @relation(fields: [clientId], references: [id])
+
+  @@unique([clientId, platform])
+}
+
+model AdAccount {
+  id                Int       @id @default(autoincrement())
+  clientId          Int
+  platform          String
+  externalAccountId String
+  name              String?
+  createdAt         DateTime  @default(now())
+
+  client    Client     @relation(fields: [clientId], references: [id])
+  campaigns Campaign[]
+}
+
+model Campaign {
+  id                Int         @id @default(autoincrement())
+  accountId         Int
+  externalCampaignId String?
+  name              String?
+  status            String?
+  startDate         DateTime?
+  endDate           DateTime?
+
+  account  AdAccount @relation(fields: [accountId], references: [id])
+  adsets   AdSet[]
+}
+
+model AdSet {
+  id         Int      @id @default(autoincrement())
+  campaignId Int
+  externalId String?
+  name       String?
+  status     String?
+  budget     Float?
+
+  campaign Campaign @relation(fields: [campaignId], references: [id])
+  ads      Ad[]
+}
+
+model Ad {
+  id         Int        @id @default(autoincrement())
+  adsetId    Int
+  externalId String?
+  name       String?
+  type       String?
+  url        String?
+
+  adset     AdSet      @relation(fields: [adsetId], references: [id])
+  reports   Report[]
+  adMetrics AdMetric[]
+}
+
+model AdMetric {
+  id          Int      @id @default(autoincrement())
+  adId        Int
+  date        DateTime
+  impressions Int?
+  clicks      Int?
+  spend       Decimal? @db.Decimal(18, 6)
+  platform    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  ad Ad @relation(fields: [adId], references: [id])
+
+  @@unique([adId, date])
+}
+
+model Report {
+  id          Int      @id @default(autoincrement())
+  adId        Int
+  date        DateTime
+  impressions Int?
+  clicks      Int?
+  spend       Float?
+  conversions Int?
+  revenue     Float?
+
+  ad Ad @relation(fields: [adId], references: [id])
+}
+
+model Project {
+  id       Int      @id @default(autoincrement())
+  clientId Int
+  name     String
+  status   String?
+  notes    String?
+
+  client Client @relation(fields: [clientId], references: [id])
+}
+
+model Event {
+  id        Int      @id @default(autoincrement())
+  clientId  Int
+  title     String
+  startTime DateTime?
+  endTime   DateTime?
+
+  client Client @relation(fields: [clientId], references: [id])
+}
+
+model Competitor {
+  id         Int      @id @default(autoincrement())
+  clientId   Int
+  name       String
+  website    String?
+
+  client         Client          @relation(fields: [clientId], references: [id])
+  competitorAds CompetitorAd[]
+}
+
+model CompetitorAd {
+  id           Int      @id @default(autoincrement())
+  competitorId Int
+  platform     String
+  adText       String?
+  url          String?
+  dateFound    DateTime?
+
+  competitor Competitor @relation(fields: [competitorId], references: [id])
+}

@@ -1,0 +1,64 @@
+We are now in Phase 9: Ad Reading Sync (read-only).
+
+Phases 7 and 8 are complete and stable.
+Use the same patterns, safety rules, and response conventions.
+
+--------------------------------
+ENDPOINT
+--------------------------------
+Implement:
+GET /ads/sync?clientId=N
+
+--------------------------------
+BEHAVIOR
+--------------------------------
+- Validate clientId
+- Validate client exists
+- Load ad accounts and campaigns from DB
+- For each campaign:
+  - If Google → fetch ads via Google Ads API
+  - If Meta → fetch ads via Meta Marketing API
+- Upsert ads idempotently
+- No deletes
+- No provider write calls
+
+--------------------------------
+FILES
+--------------------------------
+Create:
+- src/API/ads/sync.route.js
+- src/Services/ads-sync.service.js
+- src/Services/google-ads.service.js
+- src/Services/meta-ads.service.js
+
+Register route in app.js.
+
+--------------------------------
+DATA FIELDS
+--------------------------------
+Persist minimal read-only ad metadata:
+- externalAdId
+- name (or descriptive field)
+- type (when available)
+- status
+- creativeId (meta only, reference)
+
+--------------------------------
+ERROR HANDLING
+--------------------------------
+- Missing clientId → 400
+- Unknown client → 404
+- No connected platforms → 200 with synced=false
+- Per-platform failure should not crash whole request
+
+--------------------------------
+CONSTRAINTS
+--------------------------------
+- NO campaign creation
+- NO ad creation
+- NO schema changes
+- NO migrations
+- NO provider write calls
+- Read-only only
+
+Report Phase 9 complete when finished.

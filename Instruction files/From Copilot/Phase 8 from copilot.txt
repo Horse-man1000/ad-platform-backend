@@ -1,0 +1,56 @@
+We are now in Phase 8: Campaign Reading Sync (read-only).
+
+Phase 7 (Account Sync) is complete and working.
+Use the same patterns and safety rules.
+
+DO NOT implement campaign creation or modification.
+
+--------------------------------
+ENDPOINT
+--------------------------------
+Implement:
+GET /campaigns/sync?clientId=N
+
+--------------------------------
+BEHAVIOR
+--------------------------------
+- Validate clientId
+- Load client’s ad accounts from DB
+- For each account:
+  - If Google → fetch campaigns via Google Ads API
+  - If Meta → fetch campaigns via Meta Marketing API
+- Upsert campaigns idempotently
+- Do NOT delete campaigns automatically
+- Return a summary response
+
+--------------------------------
+FILES
+--------------------------------
+Create:
+- src/API/campaigns/sync.route.js
+- src/Services/campaigns-sync.service.js
+- src/Services/google-campaigns.service.js
+- src/Services/meta-campaigns.service.js
+
+Register route in app.js:
+- app.use("/campaigns/sync", campaignsSyncRouter)
+
+--------------------------------
+DATA FIELDS
+--------------------------------
+Store minimal read-only campaign metadata:
+- externalCampaignId
+- name
+- status
+- type/objective (where available)
+
+--------------------------------
+CONSTRAINTS
+--------------------------------
+- No schema changes
+- No migrations
+- No writing to provider APIs
+- No campaign creation
+- Idempotent logic only
+
+Report Phase 8 complete when finished.
